@@ -1,5 +1,6 @@
 import java.awt.Color;
 import java.awt.GridLayout;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.ImageIcon;
@@ -7,6 +8,9 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+
+import java.util.Random;
+import java.util.random.*;
 
 public class MyFrame {
     private int rows = 10; // Eje X 
@@ -24,8 +28,8 @@ public class MyFrame {
     // Constructor del frame
     MyFrame() {
 
-        ImageIcon imagenLogo  = new ImageIcon("LOGO.png"); // Creamos la instancia del Icon del logo
-        ImageIcon imagenRadar = new ImageIcon("RADAR.png");
+        ImageIcon imagenLogo  = new ImageIcon("C:\\Users\\guspa\\OneDrive\\Documents\\Practicas poo\\Battleship\\SHIPS\\LOGO.png"); // Creamos la instancia del Icon del logo
+        ImageIcon imagenRadar = new ImageIcon("C:\\Users\\guspa\\OneDrive\\Documents\\Practicas poo\\Battleship\\SHIPS\\RADAR.png");
 
         JLabel labelLogo = new JLabel(); // Creamos un label que almacenara el logo
         labelLogo.setIcon(imagenLogo); // Asignamos el Icon del logo al label
@@ -95,7 +99,7 @@ public class MyFrame {
         }
 
 
-        matrixPanels[4][5].setBackground(Color.RED);
+        //matrixPanels[4][5].setBackground(Color.RED);
 
         JFrame frame = new JFrame(); // Creamos un nuevo frame
         frame.setLayout(null); // El layout sera nulo, por lo que nosotros tendremos que asignar las posiciones
@@ -108,5 +112,32 @@ public class MyFrame {
         frame.add(panelShips); // Anadimos el panel que contiene la matriz de barcos
         frame.add(panelButtons); // Anadimos el panel que contiene la matriz de botones
         frame.setVisible(true); // Hacemos visible al frame
+        crearBarco1();
     }
+
+    public void crearBarco1() {
+        //ImageIcon imagenLogo  = new ImageIcon("C:\\Users\\guspa\\OneDrive\\Documents\\Practicas poo\\Battleship\\SHIPS\\LOGO.png"); // Creamos la instancia del Icon del logo
+        //JLabel labelLogo = new JLabel(); // Creamos un label que almacenara el logo
+        //labelLogo.setIcon(imagenLogo); // Asignamos el Icon del logo al label
+        
+        ImageIcon barco1 = new ImageIcon("C:\\Users\\guspa\\OneDrive\\Documents\\Practicas poo\\Battleship\\SHIPS\\SHIP 1\\SHIPS 1.png");
+        Random random = new Random();
+        boolean horizontal = random.nextBoolean(); // Determinar aleatoriamente si crear en horizontal o vertical
+
+        if (horizontal) {
+            int fila = random.nextInt(matrixPanels.length); // Fila aleatoria
+            int columnaInicio = random.nextInt(matrixPanels[0].length - 2); // Columna de inicio para asegurar espacio suficiente
+            for (int i = columnaInicio; i < columnaInicio + 3; i++) {
+                matrixPanels[fila][i].setBackground(Color.GREEN);
+                
+            }
+        } else {
+            int columna = random.nextInt(matrixPanels[0].length); // Columna aleatoria
+            int filaInicio = random.nextInt(matrixPanels.length - 2); // Fila de inicio para asegurar espacio suficiente
+            for (int i = filaInicio; i < filaInicio + 3; i++) {
+                matrixPanels[i][columna].setBackground(Color.GREEN);
+            }
+        }
+    }
+    
 }
