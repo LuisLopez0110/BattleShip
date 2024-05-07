@@ -1,6 +1,9 @@
+package uabc.battleship;
+
 import java.awt.Color;
 import java.awt.GridLayout;
 import java.awt.Image;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.ImageIcon;
@@ -50,6 +53,20 @@ public class MyFrame {
         panelButtons.setBackground(Color.green);
         panelButtons.setBounds(500, 200, 500, 500);
         panelButtons.setLayout(new GridLayout(rows, cols));
+
+        JButton sortButton = new JButton();
+        sortButton.setBounds(50, 40, 100, 50);
+        sortButton.setBackground(Color.gray);
+        Font fonts = new Font("Impact", Font.BOLD, 28);
+        sortButton.setFont(fonts);
+        sortButton.setText("SORT");
+        
+        JButton acceptButton = new JButton();
+        acceptButton.setBounds(50, 100, 100, 50);
+        acceptButton.setBackground(Color.gray);
+        Font fonta = new Font("Impact", Font.BOLD, 20);
+        acceptButton.setFont(fonta);
+        acceptButton.setText("ACCEPT");
 
         // Codigo para hacer el grid de paneles para nuestros barcos
         int xPosition = 0; // Posicion en x
@@ -109,10 +126,28 @@ public class MyFrame {
         frame.add(panelLogo); // Anadimos el panel que contiene el logo
         frame.add(panelShips); // Anadimos el panel que contiene la matriz de barcos
         frame.add(panelButtons); // Anadimos el panel que contiene la matriz de botones
+        frame.add(sortButton);
+        frame.add(acceptButton);
+        sortButton.addActionListener(new ActionListener() { 
+                    public void actionPerformed(ActionEvent e) {
+                        frame.setVisible(false);
+                        restorePanels();
+                        crearBarco1();
+                        panelShips.repaint();
+                        frame.setVisible(true);
+                    }
+                    
+         });
         frame.setVisible(true); // Hacemos visible al frame
-        crearBarco1();
     }
 
+    public void restorePanels(){
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < cols; j++) {
+                matrixPanels[i][j].removeAll();
+            }
+        }
+    }
 
     public void crearBarco1() {
         // Cargar las imágenes del primer barco en orden
