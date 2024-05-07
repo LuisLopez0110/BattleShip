@@ -23,6 +23,8 @@ public class MyFrame {
 
     // Matriz de botones
     private JButton[][] matrixButtons = new JButton[rows][cols];
+    
+    private int[][] matrixCPU = new int[rows][cols];
 
     private int clickedRow = 0;
     private int clickedCol = 0;
@@ -199,7 +201,7 @@ public class MyFrame {
         ImageIcon barco5Icon3Volteado = new ImageIcon("SHIP 5\\SHIP 5 (3) - copia.png");
 
         Random random = new Random();
-        boolean horizontal = random.nextBoolean(); // Determinar aleatoriamente si crear en horizontal o vertical
+        boolean horizontal; // Determinar aleatoriamente si crear en horizontal o vertical
     
         ImageIcon[] imagenesAleatorias1 = {barco1Icon1, barco1Icon2, barco1Icon3};
         ImageIcon[] imagenesAleatorias1Volteado = {barco1Icon1Volteado, barco1Icon2Volteado, barco1Icon3Volteado};
@@ -213,84 +215,123 @@ public class MyFrame {
         ImageIcon[] imageensAleatorias5Volteado = {barco5Icon1Volteado, barco5Icon2Volteado, barco5Icon3Volteado};
 
         // Banderas para validar las posiciones de los barcos
-        boolean barco1 = validarPosiciones(matrixPanels, horizontal, 3);
-        boolean barco2 = validarPosiciones(matrixPanels, horizontal, 4);
-        boolean barco3 = validarPosiciones(matrixPanels, horizontal, 5);
-        boolean barco4 = validarPosiciones(matrixPanels, horizontal, 6);
-        boolean barco5 = validarPosiciones(matrixPanels, horizontal, 3);
-
-        if(barco1 && barco2 && barco3 && barco4 && barco5){
+        boolean barco1;
+        boolean barco2;
+        boolean barco3;
+        boolean barco4;
+        boolean barco5;
+        int fila;
+        int columnaInicio;
+        int columna;
+        int filaInicio;
+        
+        horizontal = random.nextBoolean();
         if (horizontal) {
-            int fila = random.nextInt(matrixPanels.length); // Fila aleatoria
-            int columnaInicio = random.nextInt(matrixPanels[0].length - 2); // Columna de inicio para asegurar espacio suficiente
+            do{
+            fila = random.nextInt(matrixPanels.length); // Fila aleatoria
+            columnaInicio = random.nextInt(matrixPanels[0].length - 2); // Columna de inicio para asegurar espacio suficiente
+            barco1 = validarPosiciones(matrixPanels, horizontal, 3, fila, columnaInicio);
+            }while (barco1==false);
             for (int i = 0; i < 3; i++) {
                 matrixPanels[fila][columnaInicio + i].add(new JLabel(imagenesAleatorias1Volteado[i])); // Establecer la imagen del barco en el panel
             }
         } else {
-            int columna = random.nextInt(matrixPanels[0].length); // Columna aleatoria
-            int filaInicio = random.nextInt(matrixPanels.length - 2); // Fila de inicio para asegurar espacio suficiente
+            do{
+            columna = random.nextInt(matrixPanels[0].length); // Columna aleatoria
+            filaInicio = random.nextInt(matrixPanels.length - 2); // Fila de inicio para asegurar espacio suficiente
+            barco1 = validarPosiciones(matrixPanels, horizontal, 3, columna, filaInicio);
+            }while (barco1==false);
             for (int i = 0; i < 3; i++) {
                 matrixPanels[filaInicio + i][columna].add(new JLabel(imagenesAleatorias1[i])); // Establecer la imagen del barco en el panel
             }
         }
         
+        horizontal = random.nextBoolean();
         if (horizontal) {
-            int fila = random.nextInt(matrixPanels.length); // Fila aleatoria
-            int columnaInicio = random.nextInt(matrixPanels[0].length - 3); // Columna de inicio para asegurar espacio suficiente
+            do{
+            fila = random.nextInt(matrixPanels.length); // Fila aleatoria
+            columnaInicio = random.nextInt(matrixPanels[0].length - 3); // Columna de inicio para asegurar espacio suficiente
+            barco2 = validarPosiciones(matrixPanels, horizontal, 4, fila, columnaInicio);
+            }while (barco2==false);
             for (int i = 0; i < 4; i++) {
                 matrixPanels[fila][columnaInicio + i].add(new JLabel(imagenesAleatorias2Volteado[i])); // Establecer la imagen del barco en el panel
             }
         }else {
-            int columna = random.nextInt(matrixPanels[0].length);
-            int filaInicio = random.nextInt(matrixPanels.length - 3);
+            do{
+            columna = random.nextInt(matrixPanels[0].length);
+            filaInicio = random.nextInt(matrixPanels.length - 3);
+            barco2 = validarPosiciones(matrixPanels, horizontal, 4, columna, filaInicio);
+            }while (barco2==false);
             for(int i = 0; i < 4; i++) { 
                 matrixPanels[filaInicio + i][columna].add(new JLabel(imagenesAleatorias2[i]));
-            }
+            }   
         }
-
+        
+        horizontal = random.nextBoolean();
         if(horizontal) {
-            int fila = random.nextInt(matrixPanels.length);
-            int columnaInicio = random.nextInt(matrixPanels[0].length - 4);
+            do{
+            fila = random.nextInt(matrixPanels.length);
+            columnaInicio = random.nextInt(matrixPanels[0].length - 4);
+            barco3 = validarPosiciones(matrixPanels, horizontal, 5, fila, columnaInicio);
+            }while (barco3==false);
             for(int i = 0; i < 5; i++) {
                 matrixPanels[fila][columnaInicio + i].add(new JLabel(imagenesAleatorias3Volteado[i]));
             }
         } else {
-            int columna = random.nextInt(matrixPanels[0].length);
-            int filaInicio = random.nextInt(matrixPanels.length - 4);
+            do{
+            columna = random.nextInt(matrixPanels[0].length);
+            filaInicio = random.nextInt(matrixPanels.length - 4);
+            barco3 = validarPosiciones(matrixPanels, horizontal, 5, columna, filaInicio);
+            }while (barco3==false);
             for(int i = 0; i < 5; i++) { 
                 matrixPanels[filaInicio + i][columna].add(new JLabel(imagenesAleatorias3[i]));
-            }
+            }   
         }
-
+        
+        horizontal = random.nextBoolean();
         if(horizontal) {
-            int fila = random.nextInt(matrixPanels.length);
-            int columnaInicio = random.nextInt(matrixPanels[0].length - 5);
+            do{
+            fila = random.nextInt(matrixPanels.length);
+            columnaInicio = random.nextInt(matrixPanels[0].length - 5);
+            barco4 = validarPosiciones(matrixPanels, horizontal, 6, fila, columnaInicio);
+            }while (barco4==false);
             for(int i = 0; i < 6; i++) {
                 matrixPanels[fila][columnaInicio + i].add(new JLabel(imagenesAleatorias4Volteado[i]));
             }
         } else {
-            int columna = random.nextInt(matrixPanels[0].length);
-            int filaInicio = random.nextInt(matrixPanels.length - 5);
+            do{
+            columna = random.nextInt(matrixPanels[0].length);
+            filaInicio = random.nextInt(matrixPanels.length - 5);
+            barco4 = validarPosiciones(matrixPanels, horizontal, 6, columna, filaInicio);
+            }while (barco4==false);
             for(int i = 0; i < 6; i++) {
                 matrixPanels[filaInicio + i][columna].add(new JLabel(imagenesAleatorias4[i]));
             }
         }
-
+        
+        horizontal = random.nextBoolean();
         if (horizontal) {
-            int fila = random.nextInt(matrixPanels.length); // Fila aleatoria
-            int columnaInicio = random.nextInt(matrixPanels[0].length - 2); // Columna de inicio para asegurar espacio suficiente
+            do{
+            fila = random.nextInt(matrixPanels.length); // Fila aleatoria
+            columnaInicio = random.nextInt(matrixPanels[0].length - 2); // Columna de inicio para asegurar espacio suficiente
+            barco5 = validarPosiciones(matrixPanels, horizontal, 3, fila, columnaInicio);
+            }while (barco5==false);
             for (int i = 0; i < 3; i++) {
                 matrixPanels[fila][columnaInicio + i].removeAll(); // Limpiar cualquier componente anterior
                 matrixPanels[fila][columnaInicio + i].add(new JLabel(imageensAleatorias5Volteado[i])); // Establecer la imagen del barco en el panel
             }
         } else {
-            int columna = random.nextInt(matrixPanels[0].length); // Columna aleatoria
-            int filaInicio = random.nextInt(matrixPanels.length - 2); // Fila de inicio para asegurar espacio suficiente
+            do{
+            columna = random.nextInt(matrixPanels[0].length); // Columna aleatoria
+            filaInicio = random.nextInt(matrixPanels.length - 2); // Fila de inicio para asegurar espacio suficiente
+            barco5 = validarPosiciones(matrixPanels, horizontal, 3, columna, filaInicio);
+            }while (barco5==false);
             for (int i = 0; i < 3; i++) {
                 matrixPanels[filaInicio + i][columna].removeAll(); // Limpiar cualquier componente anterior
                 matrixPanels[filaInicio + i][columna].add(new JLabel(imagenesAleatorias5[i])); // Establecer la imagen del barco en el panel
             }
         }
+        
 
         // Actualizar los paneles
         for (int i = 0; i < matrixPanels.length; i++) {
@@ -298,16 +339,16 @@ public class MyFrame {
                 matrixPanels[i][j].revalidate();
                 matrixPanels[i][j].repaint();
             }
-        }}
+        }
+
     }
     
-    private boolean validarPosiciones(JPanel[][] matrixPanels, boolean horizontal, int longitud) {
-        Random random = new Random();
+    private boolean validarPosiciones(JPanel[][] matrixPanels, boolean horizontal, int longitud, int constante, int inicio) {
         boolean posicionValida = true;
     
         if (horizontal) {
-            int fila = random.nextInt(matrixPanels.length); // Fila aleatoria
-            int columnaInicio = random.nextInt(matrixPanels[0].length - longitud); // Columna de inicio para asegurar espacio suficiente
+            int fila = constante; // Fila aleatoria
+            int columnaInicio = inicio; // Columna de inicio para asegurar espacio suficiente
     
             // Verificar si hay algún componente en las posiciones que ocuparía el barco
             for (int i = 0; i < longitud; i++) {
@@ -318,8 +359,8 @@ public class MyFrame {
                 }
             }
         } else {
-            int columna = random.nextInt(matrixPanels[0].length);
-            int filaInicio = random.nextInt(matrixPanels.length - longitud);
+            int columna = constante;
+            int filaInicio = inicio;
     
             // Verificar si hay algún componente en las posiciones que ocuparía el barco
             for (int i = 0; i < longitud; i++) {
@@ -329,9 +370,38 @@ public class MyFrame {
                     break; // Salir del bucle
                 }
             }
-        }
-    
+        }    
         return posicionValida; // Devolver si la posición es válida o no
+    }
     
+    private boolean validarPosicionesCPU(int[][] matrixCPU, boolean horizontal, int longitud, int constante, int inicio) {
+        boolean posicionValida = true;
+    
+        if (horizontal) {
+            int fila = constante; // Fila aleatoria
+            int columnaInicio = inicio; // Columna de inicio para asegurar espacio suficiente
+    
+            // Verificar si hay algún componente en las posiciones que ocuparía el barco
+            for (int i = 0; i < longitud; i++) {
+                if (matrixCPU[fila][columnaInicio + i] != 0) {
+                    // Si hay un componente en el panel, la posición no es válida
+                    posicionValida = false;
+                    break; // Salir del bucle
+                }
+            }
+        } else {
+            int columna = constante;
+            int filaInicio = inicio;
+    
+            // Verificar si hay algún componente en las posiciones que ocuparía el barco
+            for (int i = 0; i < longitud; i++) {
+                if (matrixCPU[filaInicio + i][columna] != 0) {
+                    // Si hay un componente en el panel, la posición no es válida
+                    posicionValida = false;
+                    break; // Salir del bucle
+                }
+            }
+        }
+        return posicionValida; // Devolver si la posición es válida o no
     }
 }
