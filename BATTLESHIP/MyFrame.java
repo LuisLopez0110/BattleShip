@@ -1,5 +1,6 @@
 package uabc.battleship;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.GridLayout;
 import java.awt.Image;
@@ -55,6 +56,7 @@ public class MyFrame {
         panelButtons.setBackground(Color.green);
         panelButtons.setBounds(500, 200, 500, 500);
         panelButtons.setLayout(new GridLayout(rows, cols));
+        panelButtons.setVisible(false);
 
         JButton sortButton = new JButton();
         sortButton.setBounds(50, 40, 100, 50);
@@ -69,6 +71,7 @@ public class MyFrame {
         Font fonta = new Font("Impact", Font.BOLD, 20);
         acceptButton.setFont(fonta);
         acceptButton.setText("ACCEPT");
+        acceptButton.setVisible(false);
 
         // Codigo para hacer el grid de paneles para nuestros barcos
         int xPosition = 0; // Posicion en x
@@ -112,6 +115,16 @@ public class MyFrame {
                             matrixButtons[row][col].setIcon(imagenRadar);
                             matrixButtons[row][col].revalidate();
                             matrixButtons[row][col].repaint();
+                            
+                            matrixPanels[row][col].removeAll();
+                            ImageIcon imagenPanel = new ImageIcon("GOLPE.png");
+                            Image imagen = imagenPanel.getImage();
+                            Image imagenEscalada = imagen.getScaledInstance(matrixPanels[row][col].getWidth(), matrixPanels[row][col].getHeight(), Image.SCALE_SMOOTH);
+                            ImageIcon iconoEscalado = new ImageIcon(imagenEscalada);
+                            matrixPanels[row][col].setLayout(new BorderLayout());
+                            matrixPanels[row][col].add(new JLabel(iconoEscalado), BorderLayout.CENTER);
+                            matrixPanels[row][col].revalidate();
+                            matrixPanels[row][col].repaint();
                         }else{
                             matrixButtons[row][col].removeAll();
                             ImageIcon imagenRadar = new ImageIcon("RADAR2.png");
@@ -120,6 +133,16 @@ public class MyFrame {
                             matrixButtons[row][col].setIcon(imagenRadar);
                             matrixButtons[row][col].revalidate();
                             matrixButtons[row][col].repaint();
+                            
+                            matrixPanels[row][col].removeAll();
+                            ImageIcon imagenPanel = new ImageIcon("AGUA.png");
+                            Image imagen = imagenPanel.getImage();
+                            Image imagenEscalada = imagen.getScaledInstance(matrixPanels[row][col].getWidth(), matrixPanels[row][col].getHeight(), Image.SCALE_SMOOTH);
+                            ImageIcon iconoEscalado = new ImageIcon(imagenEscalada);
+                            matrixPanels[row][col].setLayout(new BorderLayout());
+                            matrixPanels[row][col].add(new JLabel(iconoEscalado), BorderLayout.CENTER);
+                            matrixPanels[row][col].revalidate();
+                            matrixPanels[row][col].repaint();
                         }
                     }
                     
@@ -130,9 +153,6 @@ public class MyFrame {
             }
             yPosition2 += 50; // Actualizamos la coordenada en y
         }
-
-
-        //matrixPanels[4][5].setBackground(Color.RED);
 
         JFrame frame = new JFrame(); // Creamos un nuevo frame
         frame.setLayout(null); // El layout sera nulo, por lo que nosotros tendremos que asignar las posiciones
@@ -151,12 +171,23 @@ public class MyFrame {
                         frame.setVisible(false);
                         restorePanels();
                         crearBarco1();
+                        generarFlotaCPU();
                         panelShips.repaint();
+                        acceptButton.setVisible(true);
                         frame.setVisible(true);
                     }
                     
          });
-        generarFlotaCPU();
+        acceptButton.addActionListener(new ActionListener() { 
+                    public void actionPerformed(ActionEvent e) {
+                        frame.setVisible(false);
+                        panelButtons.setVisible(true);
+                        sortButton.setVisible(false);
+                        acceptButton.setVisible(false);
+                        frame.setVisible(true);
+                    }
+                    
+         });
         frame.setVisible(true); // Hacemos visible al frame
     }
 
@@ -164,6 +195,14 @@ public class MyFrame {
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < cols; j++) {
                 matrixPanels[i][j].removeAll();
+            }
+        }
+    }
+    
+    public void restoreCPU(){
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < cols; j++) {
+                matrixCPU[i][j] = 0;
             }
         }
     }
@@ -361,7 +400,7 @@ public class MyFrame {
     }
     
     public void generarFlotaCPU() {
-        
+        restoreCPU();
         Random random = new Random();
         boolean horizontal; // Determinar aleatoriamente si crear en horizontal o vertical
 
