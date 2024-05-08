@@ -12,7 +12,6 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-
 import java.util.Random;
 
 public class MyFrame {
@@ -26,9 +25,15 @@ public class MyFrame {
     private JButton[][] matrixButtons = new JButton[rows][cols];
     
     private int[][] matrixCPU = new int[rows][cols];
-
+    private boolean[] matrixPlayer = new boolean[100];
+    private boolean lastShot = false;
     private int clickedRow = 0;
     private int clickedCol = 0;
+    private int lastRow;
+    private int lastCol;
+    private int hittedRow;
+    private int hittedCol;
+    private boolean[] tries = new boolean[4];
 
     // Constructor del frame
     MyFrame() {
@@ -72,6 +77,14 @@ public class MyFrame {
         acceptButton.setFont(fonta);
         acceptButton.setText("ACCEPT");
         acceptButton.setVisible(false);
+        
+        for (int i=0; i<4; i++){
+            tries[i] = false;
+        }
+        
+        for (int i=0; i<100; i++){
+            matrixPlayer[i] = false;
+        }
 
         // Codigo para hacer el grid de paneles para nuestros barcos
         int xPosition = 0; // Posicion en x
@@ -83,7 +96,7 @@ public class MyFrame {
             for (int j = 0; j < cols; j++) {
                 matrixPanels[i][j] = new JPanel(); // Hacemos un panel
                 matrixPanels[i][j].setBounds(xPosition, yPosition, 50, 50); // Le asignamos un tamano y posicion
-                matrixPanels[i][j].setBackground(new Color(10, 103, 137)); // Le asignamos un fondo
+                matrixPanels[i][j].setBackground(new Color(0, 139, 220)); // Le asignamos un fondo
                 panelShips.add(matrixPanels[i][j]); // Lo almacenamos en el panel de barcos
                 xPosition += 50; // Actualizamos la coordenada x 
             }
@@ -115,16 +128,6 @@ public class MyFrame {
                             matrixButtons[row][col].setIcon(imagenRadar);
                             matrixButtons[row][col].revalidate();
                             matrixButtons[row][col].repaint();
-                            
-                            matrixPanels[row][col].removeAll();
-                            ImageIcon imagenPanel = new ImageIcon("GOLPE.png");
-                            Image imagen = imagenPanel.getImage();
-                            Image imagenEscalada = imagen.getScaledInstance(matrixPanels[row][col].getWidth(), matrixPanels[row][col].getHeight(), Image.SCALE_SMOOTH);
-                            ImageIcon iconoEscalado = new ImageIcon(imagenEscalada);
-                            matrixPanels[row][col].setLayout(new BorderLayout());
-                            matrixPanels[row][col].add(new JLabel(iconoEscalado), BorderLayout.CENTER);
-                            matrixPanels[row][col].revalidate();
-                            matrixPanels[row][col].repaint();
                         }else{
                             matrixButtons[row][col].removeAll();
                             ImageIcon imagenRadar = new ImageIcon("RADAR2.png");
@@ -133,16 +136,109 @@ public class MyFrame {
                             matrixButtons[row][col].setIcon(imagenRadar);
                             matrixButtons[row][col].revalidate();
                             matrixButtons[row][col].repaint();
-                            
-                            matrixPanels[row][col].removeAll();
+                        }
+                        
+                        System.out.println("Button "+ row + "," + col);
+                        
+                        Random rand = new Random();
+                        int num;
+                        int lastNum = col*10 + row;
+                        int rowCPU;
+                        int colCPU;
+                        /*System.out.println(" " + lastNum);
+                        int rowCPU = lastRow;
+                        int colCPU = lastCol;
+                        if (lastShot == true || validateTries() == false){
+                            rowCPU = hittedRow;
+                            colCPU = hittedCol;
+                            if(tries[0] == true){
+                                if(lastNum%10 == 0){
+                                    tries[0] = false;
+                                }else{
+                                    if(matrixPlayer[lastNum-10] == true && lastShot == true){
+                                       tries[0] = false; 
+                                    }else{
+                                        colCPU = lastCol-1;
+                                    }
+                                }
+                            }else if(tries[1] == true){
+                                if(lastNum%10 == 9){
+                                    tries[1] = false;
+                                }else{
+                                    if(matrixPlayer[lastNum+10] == true && lastShot == true){
+                                       tries[1] = false; 
+                                    }else{
+                                        colCPU = lastCol+1;
+                                    }
+                                }
+                            }else if(tries[2] == true){
+                                if(lastNum/10 == 0){
+                                    tries[2] = false;
+                                }else{
+                                    if(matrixPlayer[lastNum+1] == true && lastShot == true){
+                                       tries[2] = false; 
+                                    }else{
+                                        rowCPU = lastRow+1;
+                                    }
+                                }
+                            }else{
+                                if(lastNum/10 == 9){
+                                    tries[3] = false;
+                                }else{
+                                    if(matrixPlayer[lastNum-1] == true && lastShot == true){
+                                       tries[3] = false; 
+                                    }else{
+                                        rowCPU = lastRow-1;
+                                    }
+                                }
+                            }
+                            matrixPlayer[colCPU*10 + rowCPU] = true;
+                        }else{
+                            do{
+                                num = rand.nextInt(100);
+                            }while (matrixPlayer[num] == true);
+                            colCPU = num/10;
+                            rowCPU = num%10;
+                            matrixPlayer[num] = true;
+                        }*/
+                        do{
+                                num = rand.nextInt(100);
+                            }while (matrixPlayer[num] == true);
+                        matrixPlayer[num] = true;
+                        colCPU = num/10;
+                        rowCPU = num%10;
+                        
+                        if (matrixPanels[rowCPU][colCPU].getComponents().length > 0){
+                            matrixPanels[rowCPU][colCPU].removeAll();
+                            ImageIcon imagenPanel = new ImageIcon("GOLPE.png");
+                            Image imagen = imagenPanel.getImage();
+                            Image imagenEscalada = imagen.getScaledInstance(matrixPanels[row][col].getWidth(), matrixPanels[row][col].getHeight(), Image.SCALE_SMOOTH);
+                            ImageIcon iconoEscalado = new ImageIcon(imagenEscalada);
+                            matrixPanels[rowCPU][colCPU].setLayout(new BorderLayout());
+                            matrixPanels[rowCPU][colCPU].add(new JLabel(iconoEscalado), BorderLayout.CENTER);
+                            matrixPanels[rowCPU][colCPU].revalidate();
+                            matrixPanels[rowCPU][colCPU].repaint();
+                            if (validateTries() == false){
+                                hittedRow = rowCPU;
+                                hittedCol = colCPU;
+                                restoreTries();
+                            }
+                            lastRow = rowCPU;
+                            lastCol = colCPU;
+                            lastShot = true;
+                        }else{
+                            matrixPanels[rowCPU][colCPU].removeAll();
                             ImageIcon imagenPanel = new ImageIcon("AGUA.png");
                             Image imagen = imagenPanel.getImage();
                             Image imagenEscalada = imagen.getScaledInstance(matrixPanels[row][col].getWidth(), matrixPanels[row][col].getHeight(), Image.SCALE_SMOOTH);
                             ImageIcon iconoEscalado = new ImageIcon(imagenEscalada);
-                            matrixPanels[row][col].setLayout(new BorderLayout());
-                            matrixPanels[row][col].add(new JLabel(iconoEscalado), BorderLayout.CENTER);
-                            matrixPanels[row][col].revalidate();
-                            matrixPanels[row][col].repaint();
+                            matrixPanels[rowCPU][colCPU].setLayout(new BorderLayout());
+                            matrixPanels[rowCPU][colCPU].add(new JLabel(iconoEscalado), BorderLayout.CENTER);
+                            matrixPanels[rowCPU][colCPU].revalidate();
+                            matrixPanels[rowCPU][colCPU].repaint();
+                            lastRow = rowCPU;
+                            lastCol = colCPU;
+                            lastShot = false;
                         }
                     }
                     
@@ -592,4 +688,21 @@ public class MyFrame {
         }
         return posicionValida; // Devolver si la posición es válida o no
     }
+    
+    public void restoreTries(){
+        for (int i=0; i<4; i++){
+            tries[i] = true;
+        }
+    }
+    
+    public boolean validateTries(){
+        boolean flag = false;
+        for (int i=0; i<4; i++){
+            if (tries[i] == true){
+                flag = true;
+            }
+        }
+        return flag;
+    }
+    
 }
